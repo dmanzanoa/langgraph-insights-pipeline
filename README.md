@@ -2,7 +2,6 @@
 
 This repository contains a modular Python implementation of the *LangGraph insights* workflow. The goal of the pipeline is to ingest raw chat data from Amazon S3, compress each conversation into a structured summary using an Anthropic model running on AWS Bedrock, compute aggregated metrics and language statistics, and finally generate higher‑level business insights. The system also produces monthly trend reports (tendencias) and project‑specific insights.
 
-The code has been refactored from a monolithic Jupyter notebook into a set of Python modules. Sensitive values such as S3 bucket names and model identifiers are no longer hard coded; instead they are read from environment variables via the `config.py` module.
 
 ## Architecture Overview
 
