@@ -1,0 +1,41 @@
+name: Scheduled insights pipeline
+
+# This workflow runs the LangGraph insights pipeline on a schedule
+# and can also be triggered manually.
+on:
+  schedule:
+    # Runs at 01:00 UTC every day. Modify the cron string for a different schedule.
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # Configure AWS credentials for this job. These secrets must be defined
+      # in the repository or organization settings.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Run the LangGraph insights pipeline
+        env:
+          # Pass additional environment variables that the pipeline expects.
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          OUTPUT_BUCKET: ${{ secrets.OUTPUT_BUCKET }}
+          MODEL_MAIN: ${{ secrets.MODEL_MAIN }}
+          MODEL_COMPRESS: ${{ secrets.MODEL_COMPRESS }}
+          MAX_RETRIES: ${{ secrets.MAX_RETRIES }}
+        run: |
+          # Execute the pipeline. `python -m app` uses the CLI entry point defined in app.py
+          python -m app
