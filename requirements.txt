@@ -1,0 +1,12 @@
+# Core dependencies for the LangGraph insights pipeline
+boto3>=1.28
+pandas>=2.0
+langgraph>=0.5
+json-repair>=2.2
+numpy>=1.25
+scikit-learn>=1.2
+nltk>=3.8
+
+# Development and testing tools
+pytest>=7.4
+ruff>=0.3
