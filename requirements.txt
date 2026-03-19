@@ -2,7 +2,7 @@
 boto3>=1.28
 pandas>=2.0
 langgraph>=0.5
-json-repair>=2.2
+jjson-repair>=0.58.6
 numpy>=1.25
 scikit-learn>=1.2
 nltk>=3.8
